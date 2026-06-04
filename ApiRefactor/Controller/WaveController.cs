@@ -1,4 +1,5 @@
 ﻿using ApiRefactor.Models;
+using ApiRefactor.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -7,25 +8,23 @@ namespace ApiRefactor.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WaveController : ControllerBase
+    public class WaveController(ILogger<WaveController> logger, WaveService waveService) : ControllerBase
     {
 
-        private readonly ILogger<WaveController> _logger;
+        private readonly ILogger<WaveController> _logger = logger;
 
-        public WaveController(ILogger<WaveController> logger)
-        {
-            _logger = logger;
-        }
-
-        /* [HttpGet(Name = "GetWaves")]
-         public ActionResult<object> Get()
-         {
-             var waves = new Waves();
-             _logger.LogInformation("Retrieving wave details");
-             return Ok(new { items = waves.Items });
-         }*/
+        private readonly WaveService _waveService = waveService;
 
         [HttpGet(Name = "GetWaves")]
+         public async Task<ActionResult<object>> Get()
+         {
+            _logger.LogInformation("Retrieving wave details");
+            var waves = await _waveService.GetAllWavesAsync();            
+            return Ok(new { items = waves });
+
+        }
+
+      /*  [HttpGet(Name = "GetWaves")]
         [Authorize]
         public ActionResult<Wave> GetAllWaves([FromQuery] int pageSize = 1, [FromQuery] int PageNumber = 1)
         {
@@ -36,10 +35,10 @@ namespace ApiRefactor.Controller
                                 .Take(pageSize)
                                 .ToList();
             return Ok(new { items = waveItems });
-        }
+        }*/
 
 
-        [HttpGet("{id:guid}", Name = "GetWaveById")]
+       /*[HttpGet("{id:guid}", Name = "GetWaveById")]
         [Authorize]
         public ActionResult<Wave> GetWaveById(Guid id)
         {
@@ -56,8 +55,7 @@ namespace ApiRefactor.Controller
             if (wave == null)
             {
                 _logger.LogInformation("Request doesnt have wave details");
-                throw new ValidationException();
-                //return BadRequest();
+                throw new ValidationException();                
             }
 
             wave.Save();
@@ -66,6 +64,7 @@ namespace ApiRefactor.Controller
 
             //return CreatedAtRoute("GetWaveById", new { id = wave.Id }, wave);
         }
+       */
 
         
 
