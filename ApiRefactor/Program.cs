@@ -1,6 +1,7 @@
 using ApiRefactor.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -12,8 +13,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
-app.MapGet("/api/wave", () => new Waves())
+/*app.MapGet("/api/wave", () => new Waves())
     .WithName("GetWaves")
     .WithOpenApi();
 
@@ -23,6 +25,6 @@ app.MapGet("/api/wave/{id}", (Guid id) => new Wave(id))
 
 app.MapPost("/api/wave", (Wave wave) => { wave.Save(); })
     .WithName("UpsertWave")
-    .WithOpenApi();
+    .WithOpenApi(); */
 
 app.Run();
