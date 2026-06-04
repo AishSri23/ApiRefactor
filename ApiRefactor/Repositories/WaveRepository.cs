@@ -18,9 +18,11 @@ namespace ApiRefactor.Repositories
             _context = context;
         }
 
-        public async Task<List<Wave>> GetAllWaves()
+        public async Task<List<Wave>> GetAllWaves(int pageSize,int pageNumber)
         {
             return await _context.Waves
+                        .Skip((pageNumber - 1) * pageSize)
+                         .Take(pageSize)
                         .AsNoTracking()
                         .ToListAsync();
 
@@ -29,7 +31,6 @@ namespace ApiRefactor.Repositories
         public async Task<Wave?> GetWavesByIdAsync(Guid id)
         {
             
-
             return await _context.Waves
                         .AsNoTracking()
                         .FirstOrDefaultAsync(w => w.Id == id);
@@ -46,8 +47,8 @@ namespace ApiRefactor.Repositories
 
             try
             {
-                var exists = await _context.Waves.AsNoTracking().AnyAsync(w => w.Id == wave.Id);
-                if (exists)
+                var data = await _context.Waves.AsNoTracking().AnyAsync(w => w.Id == wave.Id);
+                if (data)
                 {
                     _context.Waves.Update(wave);
                 }
