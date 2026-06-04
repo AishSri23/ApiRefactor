@@ -31,6 +31,7 @@ Unit of work pattern is used via DBContext
 
 CQRS is not implemented as it is a small API project and has only one method of upsert
 
+Given more time - I would refactor pagination for perfomance optimization
 
 
 
