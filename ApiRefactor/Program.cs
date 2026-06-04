@@ -1,8 +1,36 @@
 using ApiRefactor.Middleware;
-using ApiRefactor.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            //ValidIssuer = "https://localhost:7038",
+            //ValidAudience = "https://localhost:7038",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                                                    "ThisIsSecretKeyForCodingAssessmentOnRefactoringWebapi"))
+        };
+
+
+    });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Write", policy =>
+    {
+        policy.RequireClaim(
+            "scope",
+            "write");
+    });
+});
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,6 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.MapControllers();

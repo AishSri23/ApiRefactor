@@ -1,4 +1,5 @@
 ﻿using ApiRefactor.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,6 +26,7 @@ namespace ApiRefactor.Controller
          }*/
 
         [HttpGet(Name = "GetWaves")]
+        [Authorize]
         public ActionResult<Wave> GetAllWaves([FromQuery] int pageSize = 1, [FromQuery] int PageNumber = 1)
         {
             var waves = new Waves();
@@ -38,6 +40,7 @@ namespace ApiRefactor.Controller
 
 
         [HttpGet("{id:guid}", Name = "GetWaveById")]
+        [Authorize]
         public ActionResult<Wave> GetWaveById(Guid id)
         {
             var wave = new Wave(id);
@@ -47,6 +50,7 @@ namespace ApiRefactor.Controller
         }
 
         [HttpPut(Name = "UpsertWave")]
+        [Authorize(Policy = "Write")]
         public ActionResult<Wave> UpsertWave([FromBody] Wave wave)
         {
             if (wave == null)
