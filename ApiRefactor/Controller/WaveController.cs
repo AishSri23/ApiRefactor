@@ -8,11 +8,32 @@ namespace ApiRefactor.Controller
     [ApiController]
     public class WaveController : ControllerBase
     {
+
+        private readonly ILogger<WaveController> _logger;
+
+        public WaveController(ILogger<WaveController> logger)
+        {
+            _logger = logger;
+        }
+
+        /* [HttpGet(Name = "GetWaves")]
+         public ActionResult<object> Get()
+         {
+             var waves = new Waves();
+             _logger.LogInformation("Retrieving wave details");
+             return Ok(new { items = waves.Items });
+         }*/
+
         [HttpGet(Name = "GetWaves")]
-        public ActionResult<object> Get()
+        public ActionResult<Wave> GetAllWaves([FromQuery] int pageSize = 1, [FromQuery] int PageNumber = 1)
         {
             var waves = new Waves();
-            return Ok(new { items = waves.Items });
+            _logger.LogInformation("Retrieving wave details");
+            var waveItems = waves.Items
+                                .Skip((PageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToList();
+            return Ok(new { items = waveItems });
         }
 
 
@@ -20,6 +41,7 @@ namespace ApiRefactor.Controller
         public ActionResult<Wave> GetWaveById(Guid id)
         {
             var wave = new Wave(id);
+            _logger.LogInformation("Retrieving wave details by id");
             if (wave.Name == null)
             {
                 return NotFound();
@@ -33,16 +55,18 @@ namespace ApiRefactor.Controller
         {
             if (wave == null)
             {
+                _logger.LogInformation("Request doesnt have wave details");
                 return BadRequest();
             }
 
             wave.Save();
+            _logger.LogInformation("Wave details saved successfully");
             return Ok();
 
             //return CreatedAtRoute("GetWaveById", new { id = wave.Id }, wave);
         }
 
-
+        
 
     }
 }
