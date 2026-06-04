@@ -1,6 +1,6 @@
 ﻿using ApiRefactor.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiRefactor.Controller
 {
@@ -41,11 +41,7 @@ namespace ApiRefactor.Controller
         public ActionResult<Wave> GetWaveById(Guid id)
         {
             var wave = new Wave(id);
-            _logger.LogInformation("Retrieving wave details by id");
-            if (wave.Name == null)
-            {
-                return NotFound();
-            }
+            _logger.LogInformation("Retrieving wave details by id");           
 
             return Ok(wave);
         }
@@ -56,7 +52,8 @@ namespace ApiRefactor.Controller
             if (wave == null)
             {
                 _logger.LogInformation("Request doesnt have wave details");
-                return BadRequest();
+                throw new ValidationException();
+                //return BadRequest();
             }
 
             wave.Save();
