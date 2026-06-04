@@ -13,7 +13,7 @@ Please do not spend more than 3 hours on this exercise. The goal is to understan
 
 -----------------------------------------------------
 
-Moving to logic controller for better readability, maintainability, separation of concerns is better for future modifications. It would be easy to apply attributes as well.
+Moving minimalAPI logic to controller based for better readability, maintainability, separation of concerns is better for future modifications. It would be easy to apply attributes as well.
 
 Implemented ILogger for logging.
 
@@ -22,9 +22,14 @@ Implemented Global Exception Handling using IExceptionHandler
 Implemented JWT Authentication and scope based authorization for write
 
 Choosing EFCore as it is small API and as it uses SQLite.This goes Code-first database approach.
-I have used repository pattern to separate business logic and data access.
 
-I havent chose CQRS as it is a small API project and has only one method of upsert
+Repository pattern is used to separate business logic and data access.
+
+A service layer is used to co-ordinate business logic and repository calls.
+
+Unit of work pattern is used via DBContext
+
+CQRS is not implemented as it is a small API project and has only one method of upsert
 
 
 
