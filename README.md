@@ -33,5 +33,7 @@ CQRS is not implemented as it is a small API project and has only one method of 
 
 Given more time - I would refactor pagination for perfomance optimization
 
+P.S - Please change the db folder path in Program.cs
+
 
 
