@@ -21,7 +21,10 @@ Implemented Global Exception Handling using IExceptionHandler
 
 Implemented JWT Authentication and scope based authorization for write
 
-Choosing EFCore as it is small API and as it uses SQLite.
+Choosing EFCore as it is small API and as it uses SQLite.This goes Code-first database approach.
+I have used repository pattern to separate business logic and data access.
+
+I havent chose CQRS as it is a small API project and has only one method of upsert
 
 
 
