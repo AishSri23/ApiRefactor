@@ -15,7 +15,9 @@ Please do not spend more than 3 hours on this exercise. The goal is to understan
 
 Moving to logic controller for better readability, maintainability, separation of concerns is better for future modifications. It would be easy to apply attributes as well.
 
-Implementing ILogger for logging.
+Implemented ILogger for logging.
+
+Implemented GLobal Exception Handling using IExceptionHandler
 
 
 
