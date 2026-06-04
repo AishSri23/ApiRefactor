@@ -10,3 +10,13 @@ Please highlight your change by committing to a local repository and sending bac
 
 Please do not spend more than 3 hours on this exercise. The goal is to understand HOW you code.
 
+
+-----------------------------------------------------
+
+Moving to logic controller for better readability, maintainability, separation of concerns is better for future modifications. It would be easy to apply attributes as well.
+
+Implementing ILogger for logging.
+
+
+
+
