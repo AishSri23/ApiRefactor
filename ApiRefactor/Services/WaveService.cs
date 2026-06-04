@@ -11,9 +11,9 @@ namespace ApiRefactor.Services
             _waveRepository = waveRepository;
         }
 
-        public async Task<List<Wave>> GetAllWavesAsync()
+        public async Task<List<Wave>> GetAllWavesAsync(int pageSize,int PageNumber)
         {
-            return await _waveRepository.GetAllWaves();
+            return await _waveRepository.GetAllWaves(pageSize,PageNumber);
         }
         public async Task<Wave?> GetWavesByIdAsync(Guid id)
         {

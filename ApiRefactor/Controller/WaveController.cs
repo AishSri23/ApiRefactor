@@ -15,7 +15,7 @@ namespace ApiRefactor.Controller
 
         private readonly WaveService _waveService = waveService;
 
-        [HttpGet(Name = "GetWaves")]
+       /* [HttpGet(Name = "GetWaves")]
          public async Task<ActionResult<object>> Get()
          {
             _logger.LogInformation("Retrieving wave details");
@@ -23,34 +23,33 @@ namespace ApiRefactor.Controller
             return Ok(new { items = waves });
 
         }
+       */
 
-      /*  [HttpGet(Name = "GetWaves")]
-        [Authorize]
-        public ActionResult<Wave> GetAllWaves([FromQuery] int pageSize = 1, [FromQuery] int PageNumber = 1)
+       [HttpGet(Name = "GetWaves")]
+       [Authorize]
+        public async Task<ActionResult<Wave>> GetAllWaves([FromQuery] int pageSize = 1, [FromQuery] int pageNumber = 1)
         {
-            var waves = new Waves();
+            
             _logger.LogInformation("Retrieving wave details");
-            var waveItems = waves.Items
-                                .Skip((PageNumber - 1) * pageSize)
-                                .Take(pageSize)
-                                .ToList();
-            return Ok(new { items = waveItems });
-        }*/
+            var waves = await _waveService.GetAllWavesAsync(pageSize, pageNumber);
+            return Ok(new { items = waves });
+        }
 
 
-       /*[HttpGet("{id:guid}", Name = "GetWaveById")]
-        [Authorize]
-        public ActionResult<Wave> GetWaveById(Guid id)
+      [HttpGet("{Id:guid}", Name = "GetWaveById")]
+      [Authorize]
+        public async Task<ActionResult<Wave>> GetWaveById(Guid Id)
         {
-            var wave = new Wave(id);
-            _logger.LogInformation("Retrieving wave details by id");           
+            
+            _logger.LogInformation("Retrieving wave details by id");
+            var wave = await _waveService.GetWavesByIdAsync(Id);           
 
             return Ok(wave);
         }
 
         [HttpPut(Name = "UpsertWave")]
-        [Authorize(Policy = "Write")]
-        public ActionResult<Wave> UpsertWave([FromBody] Wave wave)
+       [Authorize(Policy = "Write")]
+        public async Task<ActionResult> UpsertWave([FromBody] Wave wave)
         {
             if (wave == null)
             {
@@ -58,13 +57,20 @@ namespace ApiRefactor.Controller
                 throw new ValidationException();                
             }
 
-            wave.Save();
-            _logger.LogInformation("Wave details saved successfully");
-            return Ok();
-
-            //return CreatedAtRoute("GetWaveById", new { id = wave.Id }, wave);
+            var result = await _waveService.SaveWaveAsync(wave);
+            if (result == Guid.Empty)
+            {
+                _logger.LogInformation("Wave details save is not successful");
+                return BadRequest();
+            }
+            else
+            {
+                _logger.LogInformation("Wave details saved successfully");
+                return Ok();
+            }
+            
         }
-       */
+      
 
         
 
