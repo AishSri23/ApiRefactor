@@ -21,6 +21,8 @@ Implemented Global Exception Handling using IExceptionHandler
 
 Implemented JWT Authentication and scope based authorization for write
 
+Choosing EFCore as it is small API and as it uses SQLite.
+
 
 
 
