@@ -17,7 +17,9 @@ Moving to logic controller for better readability, maintainability, separation o
 
 Implemented ILogger for logging.
 
-Implemented GLobal Exception Handling using IExceptionHandler
+Implemented Global Exception Handling using IExceptionHandler
+
+Implemented JWT Authentication and scope based authorization for write
 
 
 
